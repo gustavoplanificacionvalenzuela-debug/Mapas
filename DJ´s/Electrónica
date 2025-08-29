@@ -1,0 +1,120 @@
+# Build an interactive nationwide map of significant electronic music events in Argentina
+# (selection, not exhaustive), plus a quick static PNG and a table of points used.
+from pathlib import Path
+import pandas as pd
+import folium
+
+events = [
+    # --- CABA (Ciudad de Buenos Aires) ---
+    {"name": "Creamfields Buenos Aires", "city": "Parque de la Ciudad (Villa Soldati)", "province": "CABA",
+     "lat": -34.6703, "lon": -58.4598, "type": "Festival", "notes": "Edición masiva, sede histórica en Parque de la Ciudad"},
+    {"name": "Ultra Buenos Aires", "city": "Parque de la Ciudad (Villa Soldati)", "province": "CABA",
+     "lat": -34.6703, "lon": -58.4598, "type": "Festival", "notes": "Regreso reciente; sede en Parque de la Ciudad"},
+    {"name": "SAMC (South American Music Conference)", "city": "Centro Costa Salguero", "province": "CABA",
+     "lat": -34.5675, "lon": -58.3953, "type": "Conferencia/Festival", "notes": "Histórico encuentro de la escena electrónica"},
+    {"name": "Mandarine Park / Punta Carrasco", "city": "Costanera Norte", "province": "CABA",
+     "lat": -34.5646, "lon": -58.3958, "type": "Recinto recurrente", "notes": "Recitales y fiestas electrónicas regulares"},
+
+    # --- Pcia. de Buenos Aires ---
+    {"name": "MUTE (After Beach / Summer Season)", "city": "Mar del Plata", "province": "Buenos Aires",
+     "lat": -38.0100, "lon": -57.5500, "type": "Recinto/Temporada", "notes": "Ciclo veraniego con DJs de nivel internacional"},
+
+    # --- Mendoza ---
+    {"name": "Arcana (Lomas del Malbec)", "city": "Luján de Cuyo", "province": "Mendoza",
+     "lat": -33.0165, "lon": -68.8756, "type": "Festival", "notes": "Festival de gran escala en zona vitivinícola"},
+    {"name": "Sunsetstrip (Hernán Cattáneo)", "city": "Potrerillos", "province": "Mendoza",
+     "lat": -32.9503, "lon": -69.2168, "type": "Show/Festival", "notes": "Evento icónico en entorno cordillerano"},
+
+    # --- Neuquén ---
+    {"name": "Walüng", "city": "San Martín de los Andes", "province": "Neuquén",
+     "lat": -40.1579, "lon": -71.3534, "type": "Festival", "notes": "Festival emblemático de Patagonia"},
+    {"name": "Energy Arena – Fiesta de la Confluencia", "city": "Neuquén (capital)", "province": "Neuquén",
+     "lat": -38.9516, "lon": -68.0591, "type": "Escenario electrónico", "notes": "Stage dedicado dentro de festival masivo"},
+
+    # --- Río Negro ---
+    {"name": "Cipolletti – Fiestas con DJ", "city": "Cipolletti", "province": "Río Negro",
+     "lat": -38.9410, "lon": -67.9960, "type": "Ciclo/Fiestas", "notes": "Convocatorias grandes y frecuentes"},
+    {"name": "Gral. Fernández Oro – Fiestas con DJ", "city": "General Fernández Oro", "province": "Río Negro",
+     "lat": -38.9577, "lon": -67.9222, "type": "Ciclo/Fiestas", "notes": "Convocatorias grandes y frecuentes"},
+    {"name": "El Bolsón – Fiestas electrónicas", "city": "El Bolsón", "province": "Río Negro",
+     "lat": -41.9605, "lon": -71.5328, "type": "Fiesta puntal/Temporada", "notes": "Fechas puntuales, temporada alta"},
+
+    # --- Córdoba ---
+    {"name": "Forja Centro de Eventos (fechas electrónicas)", "city": "Córdoba", "province": "Córdoba",
+        "lat": -31.4135, "lon": -64.1811, "type": "Recinto recurrente", "notes": "Grandes shows y fechas electrónicas"},
+
+    # --- Santa Fe ---
+    {"name": "Rosario – City Center / Metropolitano (fechas electrónicas)", "city": "Rosario", "province": "Santa Fe",
+        "lat": -32.9587, "lon": -60.6930, "type": "Recintos/Fechas", "notes": "Shows y fiestas electrónicas regulares"},
+]
+
+# DataFrame
+df = pd.DataFrame(events, columns=["name","city","province","lat","lon","type","notes"])
+
+# Folium map centered on Argentina
+m = folium.Map(location=[-38.5, -65.0], zoom_start=4.5, tiles="OpenStreetMap")
+
+# Colors by province
+province_colors = {
+    "CABA": "black",
+    "Buenos Aires": "darkred",
+    "Mendoza": "red",
+    "Neuquén": "purple",
+    "Río Negro": "blue",
+    "Córdoba": "green",
+    "Santa Fe": "orange",
+}
+
+# Group by province into layers
+groups = {}
+for prov in df["province"].unique():
+    groups[prov] = folium.FeatureGroup(name=prov, show=True)
+    m.add_child(groups[prov])
+
+for _, ev in df.iterrows():
+    color = province_colors.get(ev["province"], "gray")
+    popup_html = (
+        f"<b>{ev['name']}</b><br>"
+        f"{ev['city']}, {ev['province']}<br>"
+        f"<i>{ev['type']}</i><br>"
+        f"<small>{ev['notes']}</small>"
+    )
+    folium.Marker(
+        location=[ev["lat"], ev["lon"]],
+        popup=popup_html,
+        tooltip=f"{ev['city']} – {ev['name']}",
+        icon=folium.Icon(color=color, icon="music", prefix="fa")
+    ).add_to(groups[ev["province"]])
+
+folium.LayerControl(collapsed=False).add_to(m)
+
+# Save files
+html_path = Path("/mnt/data/mapa_eventos_electronica_argentina.html")
+m.save(str(html_path))
+
+# Also generate a static PNG overview using matplotlib as a quick export
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(8, 10))
+plt.scatter(df["lon"], df["lat"], s=60)  # default colors (as per plotting rules)
+for _, ev in df.iterrows():
+    plt.text(ev["lon"]+0.2, ev["lat"]+0.2, ev["city"], fontsize=7)
+
+plt.title("Eventos electrónicos relevantes en Argentina — ubicaciones aproximadas")
+plt.xlabel("Longitud"); plt.ylabel("Latitud"); plt.grid(True, linestyle="--", alpha=0.4)
+plt.xlim(-73, -53); plt.ylim(-46, -22)
+plt.tight_layout()
+
+png_path = Path("/mnt/data/mapa_eventos_electronica_argentina.png")
+plt.savefig(png_path, dpi=200)
+plt.close()
+
+# Show table to user
+import caas_jupyter_tools
+caas_jupyter_tools.display_dataframe_to_user("Eventos electrónicos en Argentina — selección (no exhaustiva)", df)
+
+{"html_map": str(html_path), "png_map": str(png_path), "count_points": len(df)}
+Resultado
+{'html_map': '/mnt/data/mapa_eventos_electronica_argentina.html',
+ 'png_map': '/mnt/data/mapa_eventos_electronica_argentina.png',
+ 'count_points': 14}  
