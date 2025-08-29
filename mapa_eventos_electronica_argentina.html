@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_b5eedad08e82b52a1c2842b71af089fe {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_b5eedad08e82b52a1c2842b71af089fe" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_b5eedad08e82b52a1c2842b71af089fe = L.map(
+                "map_b5eedad08e82b52a1c2842b71af089fe",
+                {
+                    center: [-38.5, -65.0],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 4.5,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_ce6e35fb6f8cacd2c8856c00fb24eaa6 = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_b5eedad08e82b52a1c2842b71af089fe);
+        
+    
+            var feature_group_465727a8e2931cf84ff217b9124d4d82 = L.featureGroup(
+                {}
+            ).addTo(map_b5eedad08e82b52a1c2842b71af089fe);
+        
+    
+            var marker_1909620ceadd6f71eea0af8319e40e10 = L.marker(
+                [-34.6703, -58.4598],
+                {}
+            ).addTo(feature_group_465727a8e2931cf84ff217b9124d4d82);
+        
+    
+            var icon_1070f51bb8f563bdc55abd8f7f8f7b6f = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "music", "iconColor": "white", "markerColor": "black", "prefix": "fa"}
+            );
+            marker_1909620ceadd6f71eea0af8319e40e10.setIcon(icon_1070f51bb8f563bdc55abd8f7f8f7b6f);
+        
+    
+        var popup_06b5314f8f457baba42288f20aff1ac9 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_3377735dad944cbf782746e8a0b385da = $(`<div id="html_3377735dad944cbf782746e8a0b385da" style="width: 100.0%; height: 100.0%;"><b>Creamfields Buenos Aires</b><br>Parque de la Ciudad (Villa Soldati), CABA<br><i>Festival</i><br><small>Edición masiva, sede histórica en Parque de la Ciudad</small></div>`)[0];
+            popup_06b5314f8f457baba42288f20aff1ac9.setContent(html_3377735dad944cbf782746e8a0b385da);
+        
+
+        marker_1909620ceadd6f71eea0af8319e40e10.bindPopup(popup_06b5314f8f457baba42288f20aff1ac9)
+        ;
+
+        
+    
+    
+            marker_1909620ceadd6f71eea0af8319e40e10.bindTooltip(
+                `<div>
+                     Parque de la Ciudad (Villa Soldati) – Creamfields Buenos Aires
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_8294674c7733e21dd0595b4003fb1df8 = L.marker(
+                [-34.6703, -58.4598],
+                {}
+            ).addTo(feature_group_465727a8e2931cf84ff217b9124d4d82);
+        
+    
+            var icon_2a61b256bcc510d248a57decc12b9099 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "music", "iconColor": "white", "markerColor": "black", "prefix": "fa"}
+            );
+            marker_8294674c7733e21dd0595b4003fb1df8.setIcon(icon_2a61b256bcc510d248a57decc12b9099);
+        
+    
+        var popup_a7340ee7e6ec5a56eb8b2e0923e78dfe = L.popup({"maxWidth": "100%"});
+
+        
+            var html_42dd435e44126ba30ab63fbdbd68543b = $(`<div id="html_42dd435e44126ba30ab63fbdbd68543b" style="width: 100.0%; height: 100.0%;"><b>Ultra Buenos Aires</b><br>Parque de la Ciudad (Villa Soldati), CABA<br><i>Festival</i><br><small>Regreso reciente; sede en Parque de la Ciudad</small></div>`)[0];
+            popup_a7340ee7e6ec5a56eb8b2e0923e78dfe.setContent(html_42dd435e44126ba30ab63fbdbd68543b);
+        
+
+        marker_8294674c7733e21dd0595b4003fb1df8.bindPopup(popup_a7340ee7e6ec5a56eb8b2e0923e78dfe)
+        ;
+
+        
+    
+    
+            marker_8294674c7733e21dd0595b4003fb1df8.bindTooltip(
+                `<div>
+                     Parque de la Ciudad (Villa Soldati) – Ultra Buenos Aires
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5c913e05299b202b8105e854b2d469ef = L.marker(
+                [-34.5675, -58.3953],
+                {}
+            ).addTo(feature_group_465727a8e2931cf84ff217b9124d4d82);
+        
+    
+            var icon_2d6701915b6f2bd88e73060a6540d138 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "music", "iconColor": "white", "markerColor": "black", "prefix": "fa"}
+            );
+            marker_5c913e05299b202b8105e854b2d469ef.setIcon(icon_2d6701915b6f2bd88e73060a6540d138);
+        
+    
+        var popup_315ba1dba7ba6990e2df0e4c045ce7ee = L.popup({"maxWidth": "100%"});
+
+        
+            var html_b7efd89ce8c49aa27c9a8cd0d993222b = $(`<div id="html_b7efd89ce8c49aa27c9a8cd0d993222b" style="width: 100.0%; height: 100.0%;"><b>SAMC (South American Music Conference)</b><br>Centro Costa Salguero, CABA<br><i>Conferencia/Festival</i><br><small>Histórico encuentro de la escena electrónica</small></div>`)[0];
+            popup_315ba1dba7ba6990e2df0e4c045ce7ee.setContent(html_b7efd89ce8c49aa27c9a8cd0d993222b);
+        
+
+        marker_5c913e05299b202b8105e854b2d469ef.bindPopup(popup_315ba1dba7ba6990e2df0e4c045ce7ee)
+        ;
+
+        
+    
+    
+            marker_5c913e05299b202b8105e854b2d469ef.bindTooltip(
+                `<div>
+                     Centro Costa Salguero – SAMC (South American Music Conference)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_8448450a0dff7e816acafbc8cf0027b6 = L.marker(
+                [-34.5646, -58.3958],
+                {}
+            ).addTo(feature_group_465727a8e2931cf84ff217b9124d4d82);
+        
+    
+            var icon_281e5a69bef432ed25069f5cdca120c9 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "music", "iconColor": "white", "markerColor": "black", "prefix": "fa"}
+            );
+            marker_8448450a0dff7e816acafbc8cf0027b6.setIcon(icon_281e5a69bef432ed25069f5cdca120c9);
+        
+    
+        var popup_fd9db48bb548262165aee4a91676e263 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_aece847b4ad2dc5e556a71bdaec0ed5f = $(`<div id="html_aece847b4ad2dc5e556a71bdaec0ed5f" style="width: 100.0%; height: 100.0%;"><b>Mandarine Park / Punta Carrasco</b><br>Costanera Norte, CABA<br><i>Recinto recurrente</i><br><small>Recitales y fiestas electrónicas regulares</small></div>`)[0];
+            popup_fd9db48bb548262165aee4a91676e263.setContent(html_aece847b4ad2dc5e556a71bdaec0ed5f);
+        
+
+        marker_8448450a0dff7e816acafbc8cf0027b6.bindPopup(popup_fd9db48bb548262165aee4a91676e263)
+        ;
+
+        
+    
+    
+            marker_8448450a0dff7e816acafbc8cf0027b6.bindTooltip(
+                `<div>
+                     Costanera Norte – Mandarine Park / Punta Carrasco
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var feature_group_9eee402fbab9b69e490b577612d1887c = L.featureGroup(
+                {}
+            ).addTo(map_b5eedad08e82b52a1c2842b71af089fe);
+        
+    
+            var marker_09812d3e6a91b320e8b5f2f5b51dec31 = L.marker(
+                [-38.01, -57.55],
+                {}
+            ).addTo(feature_group_9eee402fbab9b69e490b577612d1887c);
+        
+    
+            var icon_2f14bb7770fcda777505ac159bbc8096 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "music", "iconColor": "white", "markerColor": "darkred", "prefix": "fa"}
+            );
+            marker_09812d3e6a91b320e8b5f2f5b51dec31.setIcon(icon_2f14bb7770fcda777505ac159bbc8096);
+        
+    
+        var popup_b7f586e263f6de9dc996fc09f4703a09 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_c0be7dee06a9d3b1d9ba869e0230952c = $(`<div id="html_c0be7dee06a9d3b1d9ba869e0230952c" style="width: 100.0%; height: 100.0%;"><b>MUTE (After Beach / Summer Season)</b><br>Mar del Plata, Buenos Aires<br><i>Recinto/Temporada</i><br><small>Ciclo veraniego con DJs de nivel internacional</small></div>`)[0];
+            popup_b7f586e263f6de9dc996fc09f4703a09.setContent(html_c0be7dee06a9d3b1d9ba869e0230952c);
+        
+
+        marker_09812d3e6a91b320e8b5f2f5b51dec31.bindPopup(popup_b7f586e263f6de9dc996fc09f4703a09)
+        ;
+
+        
+    
+    
+            marker_09812d3e6a91b320e8b5f2f5b51dec31.bindTooltip(
+                `<div>
+                     Mar del Plata – MUTE (After Beach / Summer Season)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var feature_group_aaa14d856cf4f2184f2c110aae83eb0a = L.featureGroup(
+                {}
+            ).addTo(map_b5eedad08e82b52a1c2842b71af089fe);
+        
+    
+            var marker_dfb556c3061a21354c2849cb7895340b = L.marker(
+                [-33.0165, -68.8756],
+                {}
+            ).addTo(feature_group_aaa14d856cf4f2184f2c110aae83eb0a);
+        
+    
+            var icon_287d0712e5f6bb2514b46507185e740e = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "music", "iconColor": "white", "markerColor": "red", "prefix": "fa"}
+            );
+            marker_dfb556c3061a21354c2849cb7895340b.setIcon(icon_287d0712e5f6bb2514b46507185e740e);
+        
+    
+        var popup_4cc7fd139dc63bd139ff3cbaba243ecf = L.popup({"maxWidth": "100%"});
+
+        
+            var html_c2931e500f69790854abdb471d506131 = $(`<div id="html_c2931e500f69790854abdb471d506131" style="width: 100.0%; height: 100.0%;"><b>Arcana (Lomas del Malbec)</b><br>Luján de Cuyo, Mendoza<br><i>Festival</i><br><small>Festival de gran escala en zona vitivinícola</small></div>`)[0];
+            popup_4cc7fd139dc63bd139ff3cbaba243ecf.setContent(html_c2931e500f69790854abdb471d506131);
+        
+
+        marker_dfb556c3061a21354c2849cb7895340b.bindPopup(popup_4cc7fd139dc63bd139ff3cbaba243ecf)
+        ;
+
+        
+    
+    
+            marker_dfb556c3061a21354c2849cb7895340b.bindTooltip(
+                `<div>
+                     Luján de Cuyo – Arcana (Lomas del Malbec)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_cf0226b337deedb7ed198a7e24f272ab = L.marker(
+                [-32.9503, -69.2168],
+                {}
+            ).addTo(feature_group_aaa14d856cf4f2184f2c110aae83eb0a);
+        
+    
+            var icon_d0a59be7511fb8696afee426a995b849 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "music", "iconColor": "white", "markerColor": "red", "prefix": "fa"}
+            );
+            marker_cf0226b337deedb7ed198a7e24f272ab.setIcon(icon_d0a59be7511fb8696afee426a995b849);
+        
+    
+        var popup_f9062c407c3585c7b3dc8e70f0cabbc2 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_1a3a67f54128894c8a6e4a317f7a4289 = $(`<div id="html_1a3a67f54128894c8a6e4a317f7a4289" style="width: 100.0%; height: 100.0%;"><b>Sunsetstrip (Hernán Cattáneo)</b><br>Potrerillos, Mendoza<br><i>Show/Festival</i><br><small>Evento icónico en entorno cordillerano</small></div>`)[0];
+            popup_f9062c407c3585c7b3dc8e70f0cabbc2.setContent(html_1a3a67f54128894c8a6e4a317f7a4289);
+        
+
+        marker_cf0226b337deedb7ed198a7e24f272ab.bindPopup(popup_f9062c407c3585c7b3dc8e70f0cabbc2)
+        ;
+
+        
+    
+    
+            marker_cf0226b337deedb7ed198a7e24f272ab.bindTooltip(
+                `<div>
+                     Potrerillos – Sunsetstrip (Hernán Cattáneo)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var feature_group_58eb4552568d97589bb9db4ded48a576 = L.featureGroup(
+                {}
+            ).addTo(map_b5eedad08e82b52a1c2842b71af089fe);
+        
+    
+            var marker_4f74d7b1b6a111027af590e1969ca84f = L.marker(
+                [-40.1579, -71.3534],
+                {}
+            ).addTo(feature_group_58eb4552568d97589bb9db4ded48a576);
+        
+    
+            var icon_5cd131e5626a5d376b6566b38185ad8d = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "music", "iconColor": "white", "markerColor": "purple", "prefix": "fa"}
+            );
+            marker_4f74d7b1b6a111027af590e1969ca84f.setIcon(icon_5cd131e5626a5d376b6566b38185ad8d);
+        
+    
+        var popup_70b54c4611783ad39109a1c597da66f2 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_3dbf73c7a0fb67788c28ecbaa6e18664 = $(`<div id="html_3dbf73c7a0fb67788c28ecbaa6e18664" style="width: 100.0%; height: 100.0%;"><b>Walüng</b><br>San Martín de los Andes, Neuquén<br><i>Festival</i><br><small>Festival emblemático de Patagonia</small></div>`)[0];
+            popup_70b54c4611783ad39109a1c597da66f2.setContent(html_3dbf73c7a0fb67788c28ecbaa6e18664);
+        
+
+        marker_4f74d7b1b6a111027af590e1969ca84f.bindPopup(popup_70b54c4611783ad39109a1c597da66f2)
+        ;
+
+        
+    
+    
+            marker_4f74d7b1b6a111027af590e1969ca84f.bindTooltip(
+                `<div>
+                     San Martín de los Andes – Walüng
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_50e440c51b090fb3ef4e1cdb3623bffc = L.marker(
+                [-38.9516, -68.0591],
+                {}
+            ).addTo(feature_group_58eb4552568d97589bb9db4ded48a576);
+        
+    
+            var icon_8d83a5938ff92d33085e627f72b0a217 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "music", "iconColor": "white", "markerColor": "purple", "prefix": "fa"}
+            );
+            marker_50e440c51b090fb3ef4e1cdb3623bffc.setIcon(icon_8d83a5938ff92d33085e627f72b0a217);
+        
+    
+        var popup_50597445f9b871ef178d5b7b119fe109 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_75812759fdaedbdd4195e54c3ab02c22 = $(`<div id="html_75812759fdaedbdd4195e54c3ab02c22" style="width: 100.0%; height: 100.0%;"><b>Energy Arena – Fiesta de la Confluencia</b><br>Neuquén (capital), Neuquén<br><i>Escenario electrónico</i><br><small>Stage dedicado dentro de festival masivo</small></div>`)[0];
+            popup_50597445f9b871ef178d5b7b119fe109.setContent(html_75812759fdaedbdd4195e54c3ab02c22);
+        
+
+        marker_50e440c51b090fb3ef4e1cdb3623bffc.bindPopup(popup_50597445f9b871ef178d5b7b119fe109)
+        ;
+
+        
+    
+    
+            marker_50e440c51b090fb3ef4e1cdb3623bffc.bindTooltip(
+                `<div>
+                     Neuquén (capital) – Energy Arena – Fiesta de la Confluencia
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var feature_group_5ebd71bbb57a881269f96aec9341fd9a = L.featureGroup(
+                {}
+            ).addTo(map_b5eedad08e82b52a1c2842b71af089fe);
+        
+    
+            var marker_580a6e3555ccc0c83926783a6ff2883c = L.marker(
+                [-38.941, -67.996],
+                {}
+            ).addTo(feature_group_5ebd71bbb57a881269f96aec9341fd9a);
+        
+    
+            var icon_00d74162ca6cb5215e4fd40cf56756fd = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "music", "iconColor": "white", "markerColor": "blue", "prefix": "fa"}
+            );
+            marker_580a6e3555ccc0c83926783a6ff2883c.setIcon(icon_00d74162ca6cb5215e4fd40cf56756fd);
+        
+    
+        var popup_15679d8c90c2713713a465fcdc345751 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_c3c06d61feea10dc3c72fad1e3ecae85 = $(`<div id="html_c3c06d61feea10dc3c72fad1e3ecae85" style="width: 100.0%; height: 100.0%;"><b>Cipolletti – Fiestas con DJ</b><br>Cipolletti, Río Negro<br><i>Ciclo/Fiestas</i><br><small>Convocatorias grandes y frecuentes</small></div>`)[0];
+            popup_15679d8c90c2713713a465fcdc345751.setContent(html_c3c06d61feea10dc3c72fad1e3ecae85);
+        
+
+        marker_580a6e3555ccc0c83926783a6ff2883c.bindPopup(popup_15679d8c90c2713713a465fcdc345751)
+        ;
+
+        
+    
+    
+            marker_580a6e3555ccc0c83926783a6ff2883c.bindTooltip(
+                `<div>
+                     Cipolletti – Cipolletti – Fiestas con DJ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_60703068b08e1d9410b17f47e4e05b7d = L.marker(
+                [-38.9577, -67.9222],
+                {}
+            ).addTo(feature_group_5ebd71bbb57a881269f96aec9341fd9a);
+        
+    
+            var icon_517379d9d7a2f50f517b6ae5e9796709 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "music", "iconColor": "white", "markerColor": "blue", "prefix": "fa"}
+            );
+            marker_60703068b08e1d9410b17f47e4e05b7d.setIcon(icon_517379d9d7a2f50f517b6ae5e9796709);
+        
+    
+        var popup_dc5b29325d53b071b915da9e2079e9f0 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_40d7457acb144103cb19d381c6d80e32 = $(`<div id="html_40d7457acb144103cb19d381c6d80e32" style="width: 100.0%; height: 100.0%;"><b>Gral. Fernández Oro – Fiestas con DJ</b><br>General Fernández Oro, Río Negro<br><i>Ciclo/Fiestas</i><br><small>Convocatorias grandes y frecuentes</small></div>`)[0];
+            popup_dc5b29325d53b071b915da9e2079e9f0.setContent(html_40d7457acb144103cb19d381c6d80e32);
+        
+
+        marker_60703068b08e1d9410b17f47e4e05b7d.bindPopup(popup_dc5b29325d53b071b915da9e2079e9f0)
+        ;
+
+        
+    
+    
+            marker_60703068b08e1d9410b17f47e4e05b7d.bindTooltip(
+                `<div>
+                     General Fernández Oro – Gral. Fernández Oro – Fiestas con DJ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e043dab91128eb18962173e6ebb59738 = L.marker(
+                [-41.9605, -71.5328],
+                {}
+            ).addTo(feature_group_5ebd71bbb57a881269f96aec9341fd9a);
+        
+    
+            var icon_b264d6589856bfadca7e97fbaecd3c0d = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "music", "iconColor": "white", "markerColor": "blue", "prefix": "fa"}
+            );
+            marker_e043dab91128eb18962173e6ebb59738.setIcon(icon_b264d6589856bfadca7e97fbaecd3c0d);
+        
+    
+        var popup_aeb422e59a4d067246ce15b2dad2a3fa = L.popup({"maxWidth": "100%"});
+
+        
+            var html_402626ecf51df338ed4c831510e20755 = $(`<div id="html_402626ecf51df338ed4c831510e20755" style="width: 100.0%; height: 100.0%;"><b>El Bolsón – Fiestas electrónicas</b><br>El Bolsón, Río Negro<br><i>Fiesta puntal/Temporada</i><br><small>Fechas puntuales, temporada alta</small></div>`)[0];
+            popup_aeb422e59a4d067246ce15b2dad2a3fa.setContent(html_402626ecf51df338ed4c831510e20755);
+        
+
+        marker_e043dab91128eb18962173e6ebb59738.bindPopup(popup_aeb422e59a4d067246ce15b2dad2a3fa)
+        ;
+
+        
+    
+    
+            marker_e043dab91128eb18962173e6ebb59738.bindTooltip(
+                `<div>
+                     El Bolsón – El Bolsón – Fiestas electrónicas
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var feature_group_7cacd33d9c09480dc88cbad31a4d1972 = L.featureGroup(
+                {}
+            ).addTo(map_b5eedad08e82b52a1c2842b71af089fe);
+        
+    
+            var marker_59b553c6ae6d514958d67eb6ec92c05d = L.marker(
+                [-31.4135, -64.1811],
+                {}
+            ).addTo(feature_group_7cacd33d9c09480dc88cbad31a4d1972);
+        
+    
+            var icon_15057790802d1240230520e12e3faa85 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "music", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_59b553c6ae6d514958d67eb6ec92c05d.setIcon(icon_15057790802d1240230520e12e3faa85);
+        
+    
+        var popup_b0d7db53339ac6b0e33747cd155c6e4d = L.popup({"maxWidth": "100%"});
+
+        
+            var html_c52d94c7f36281e8fd25cbaee0fd7665 = $(`<div id="html_c52d94c7f36281e8fd25cbaee0fd7665" style="width: 100.0%; height: 100.0%;"><b>Forja Centro de Eventos (fechas electrónicas)</b><br>Córdoba, Córdoba<br><i>Recinto recurrente</i><br><small>Grandes shows y fechas electrónicas</small></div>`)[0];
+            popup_b0d7db53339ac6b0e33747cd155c6e4d.setContent(html_c52d94c7f36281e8fd25cbaee0fd7665);
+        
+
+        marker_59b553c6ae6d514958d67eb6ec92c05d.bindPopup(popup_b0d7db53339ac6b0e33747cd155c6e4d)
+        ;
+
+        
+    
+    
+            marker_59b553c6ae6d514958d67eb6ec92c05d.bindTooltip(
+                `<div>
+                     Córdoba – Forja Centro de Eventos (fechas electrónicas)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var feature_group_41d7426186e266c90f2be4e524da3d72 = L.featureGroup(
+                {}
+            ).addTo(map_b5eedad08e82b52a1c2842b71af089fe);
+        
+    
+            var marker_c9c9cd0ab931f640aaba479eeead321d = L.marker(
+                [-32.9587, -60.693],
+                {}
+            ).addTo(feature_group_41d7426186e266c90f2be4e524da3d72);
+        
+    
+            var icon_73f651637fa10d5e5bb66408d2d345b3 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "music", "iconColor": "white", "markerColor": "orange", "prefix": "fa"}
+            );
+            marker_c9c9cd0ab931f640aaba479eeead321d.setIcon(icon_73f651637fa10d5e5bb66408d2d345b3);
+        
+    
+        var popup_3d124adc7711ec738fc267251b05522f = L.popup({"maxWidth": "100%"});
+
+        
+            var html_ec5da1b5c41c21cc32d65adcc5022003 = $(`<div id="html_ec5da1b5c41c21cc32d65adcc5022003" style="width: 100.0%; height: 100.0%;"><b>Rosario – City Center / Metropolitano (fechas electrónicas)</b><br>Rosario, Santa Fe<br><i>Recintos/Fechas</i><br><small>Shows y fiestas electrónicas regulares</small></div>`)[0];
+            popup_3d124adc7711ec738fc267251b05522f.setContent(html_ec5da1b5c41c21cc32d65adcc5022003);
+        
+
+        marker_c9c9cd0ab931f640aaba479eeead321d.bindPopup(popup_3d124adc7711ec738fc267251b05522f)
+        ;
+
+        
+    
+    
+            marker_c9c9cd0ab931f640aaba479eeead321d.bindTooltip(
+                `<div>
+                     Rosario – Rosario – City Center / Metropolitano (fechas electrónicas)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var layer_control_c0db0ffaca98d138ff2cc9841efb216a = {
+                base_layers : {
+                    "openstreetmap" : tile_layer_ce6e35fb6f8cacd2c8856c00fb24eaa6,
+                },
+                overlays :  {
+                    "CABA" : feature_group_465727a8e2931cf84ff217b9124d4d82,
+                    "Buenos Aires" : feature_group_9eee402fbab9b69e490b577612d1887c,
+                    "Mendoza" : feature_group_aaa14d856cf4f2184f2c110aae83eb0a,
+                    "Neuqu\u00e9n" : feature_group_58eb4552568d97589bb9db4ded48a576,
+                    "R\u00edo Negro" : feature_group_5ebd71bbb57a881269f96aec9341fd9a,
+                    "C\u00f3rdoba" : feature_group_7cacd33d9c09480dc88cbad31a4d1972,
+                    "Santa Fe" : feature_group_41d7426186e266c90f2be4e524da3d72,
+                },
+            };
+            L.control.layers(
+                layer_control_c0db0ffaca98d138ff2cc9841efb216a.base_layers,
+                layer_control_c0db0ffaca98d138ff2cc9841efb216a.overlays,
+                {"autoZIndex": true, "collapsed": false, "position": "topright"}
+            ).addTo(map_b5eedad08e82b52a1c2842b71af089fe);
+        
+</script>
+</html>
