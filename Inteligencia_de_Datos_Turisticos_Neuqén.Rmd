@@ -1,0 +1,559 @@
+---
+title: "Inteligencia_de_Datos_Turisticos_Neuqén"
+author: "Gustavo Valenzuela"
+date: "2026-06-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+---
+title: "Análisis geoespacial integrado de alojamientos, ocupación y demanda turística"
+author: "Gustavo Valenzuela"
+date: "2026-06-21"
+output: html_document
+---
+
+```{r configuracion}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+# Introducción
+
+El presente trabajo analiza la distribución espacial de los alojamientos turísticos de la Provincia del Neuquén, integrando información de oferta, ocupación hotelera y demanda turística simulada para el año 2026. Se utiliza un dataset georreferenciado de alojamientos, una capa de regiones turísticas del COPADE y datasets complementarios de ocupación y perfil de visitantes.
+
+# Librerías
+
+```{r librerias}
+library(sf)
+library(dplyr)
+library(readr)
+library(leaflet)
+library(ggplot2)
+library(knitr)
+```
+
+# Carga de datos
+
+```{r carga-datos}
+
+alojamientos <- read_csv("Base_Alojamiento_Geo_Practico.csv")
+
+ocupacion <- read_csv("Dataset_Ocupacion_Hotelera_2026_Simulado.csv")
+
+demanda <- read_csv("Dataset_Demanda_Turistica_2026_Simulado.csv")
+
+ruta_regiones <- "/Users/gustavovalenzuela/Gustavo/CURSO AMDG /regiones/regiones.shp"
+
+regiones <- st_read(
+  ruta_regiones,
+  quiet = TRUE
+)
+
+regiones$region <- iconv(
+  regiones$region,
+  from = "latin1",
+  to = "UTF-8"
+)
+
+```
+
+# Exploración inicial
+
+```{r exploracion}
+
+head(alojamientos)
+head(ocupacion)
+head(demanda)
+
+names(alojamientos)
+names(ocupacion)
+names(demanda)
+
+summary(alojamientos)
+
+```
+
+# Tabla descriptiva de atributos
+
+```{r tabla-atributos}
+
+atributos <- data.frame(
+  nombre_atributo = c(
+    "ID_ALOJ",
+    "LOCALIDAD",
+    "REGION_TURISTICA",
+    "CLASE",
+    "PLAZAS",
+    "OCUPACION_PORC",
+    "PERFIL_USUARIO",
+    "PROCEDENCIA"
+  ),
+  tipo_dato = c(
+    "Numérico",
+    "Caracter",
+    "Caracter",
+    "Caracter",
+    "Numérico",
+    "Numérico",
+    "Caracter",
+    "Caracter"
+  ),
+  escala_medicion = c(
+    "Nominal",
+    "Nominal",
+    "Nominal",
+    "Nominal",
+    "Ratio",
+    "Ratio",
+    "Nominal",
+    "Nominal"
+  ),
+  descripcion = c(
+    "Identificador único del alojamiento",
+    "Localidad donde se ubica el establecimiento",
+    "Región turística de pertenencia",
+    "Tipo o clase de alojamiento",
+    "Cantidad total de plazas disponibles",
+    "Porcentaje de ocupación hotelera registrado",
+    "Perfil general del visitante o usuario turístico",
+    "Lugar de procedencia de la demanda turística"
+  )
+)
+
+kable(atributos)
+
+```
+
+# Medidas resumen
+
+```{r summary-datos}
+
+summary(alojamientos$PLAZAS)
+summary(alojamientos$UNID_HAB)
+summary(ocupacion$OCUPACION_PORC)
+
+```
+
+# Histograma de plazas
+
+```{r histograma-plazas}
+
+ggplot(alojamientos, aes(x = PLAZAS)) +
+  geom_histogram(bins = 30) +
+  labs(
+    title = "Distribución de plazas por establecimiento",
+    x = "Cantidad de plazas",
+    y = "Frecuencia"
+  )
+
+```
+
+# Boxplot de ocupación hotelera
+
+```{r boxplot-ocupacion}
+
+ggplot(ocupacion, aes(y = OCUPACION_PORC)) +
+  geom_boxplot() +
+  labs(
+    title = "Distribución de la ocupación hotelera 2026",
+    y = "Ocupación (%)"
+  )
+
+```
+
+# Conversión del dataset de alojamientos a objeto espacial
+
+```{r convertir-sf}
+
+alojamientos_sf <- st_as_sf(
+  alojamientos,
+  coords = c("LONGITUD", "LATITUD"),
+  crs = 4326
+)
+
+alojamientos_sf
+
+```
+
+# Integración de alojamientos, ocupación y demanda
+
+```{r integrar-datasets}
+
+base_integrada <- alojamientos %>%
+  left_join(ocupacion, by = "ID_ALOJ") %>%
+  left_join(demanda, by = "ID_ALOJ")
+
+head(base_integrada)
+
+```
+
+# Resumen de ocupación por región turística
+
+```{r ocupacion-region}
+
+ocupacion_region <- base_integrada %>%
+  group_by(REGION_TURISTICA) %>%
+  summarise(
+    cantidad_registros = n(),
+    ocupacion_promedio = mean(OCUPACION_PORC, na.rm = TRUE),
+    plazas_totales = sum(PLAZAS, na.rm = TRUE),
+    pernoctes_estimados = sum(PERNOCTES_ESTIMADOS, na.rm = TRUE)
+  ) %>%
+  arrange(desc(ocupacion_promedio))
+
+ocupacion_region
+
+```
+# Perfil de demanda por región
+
+```{r demanda-region}
+
+demanda_region <- base_integrada %>%
+  group_by(REGION_TURISTICA, SEGMENTO_USUARIO) %>%
+  summarise(
+    cantidad_visitantes = n(),
+    gasto_promedio = mean(GASTO_TOTAL_ESTIMADO, na.rm = TRUE),
+    noches_promedio = mean(NOCHES, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(REGION_TURISTICA, desc(cantidad_visitantes))
+
+demanda_region
+
+```
+
+# Manipulación de dataframes
+
+```{r dplyr-operaciones}
+
+base_integrada_limpia <- base_integrada %>%
+  filter(!is.na(PLAZAS), !is.na(OCUPACION_PORC)) %>%
+  mutate(
+    TAMANIO_ALOJAMIENTO = case_when(
+      PLAZAS < 30 ~ "Pequeño",
+      PLAZAS < 80 ~ "Mediano",
+      TRUE ~ "Grande"
+    ),
+    NIVEL_OCUPACION = case_when(
+      OCUPACION_PORC < 40 ~ "Baja",
+      OCUPACION_PORC < 70 ~ "Media",
+      TRUE ~ "Alta"
+    )
+  ) %>%
+  select(
+    ID_ALOJ,
+    ESTABLECIMIENTO,
+    LOCALIDAD,
+    REGION_TURISTICA,
+    CLASE.y,
+    PLAZAS,
+    OCUPACION_PORC,
+    NIVEL_OCUPACION,
+    SEGMENTO_USUARIO,
+    PROCEDENCIA,
+    GASTO_TOTAL_ESTIMADO,
+    NOCHES
+  )
+
+head(base_integrada_limpia)
+
+```
+
+# Agrupaciones
+
+```{r agrupaciones}
+
+resumen_region <- base_integrada %>%
+  group_by(REGION_TURISTICA) %>%
+  summarise(
+    alojamientos = n_distinct(ID_ALOJ),
+    plazas_totales = sum(PLAZAS, na.rm = TRUE),
+    ocupacion_promedio = mean(OCUPACION_PORC, na.rm = TRUE),
+    gasto_promedio = mean(GASTO_TOTAL_ESTIMADO, na.rm = TRUE)
+  ) %>%
+  arrange(desc(plazas_totales))
+
+resumen_region
+
+resumen_perfil <- base_integrada %>%
+  group_by(SEGMENTO_USUARIO) %>%
+  summarise(
+    cantidad_registros = n(),
+    gasto_promedio = mean(GASTO_TOTAL_ESTIMADO, na.rm = TRUE),
+    noches_promedio = mean(NOCHES, na.rm = TRUE)
+  ) %>%
+  arrange(desc(cantidad_registros))
+
+resumen_perfil
+
+```
+
+# Resumen por alojamiento
+popup_alojamientos <- base_integrada %>%
+  filter(!is.na(LATITUD), !is.na(LONGITUD)) %>%
+  group_by(
+    ID_ALOJ, ESTABLECIMIENTO, LOCALIDAD, REGION_TURISTICA,
+    CATEG, UNID_HAB, PLAZAS, LATITUD, LONGITUD
+  ) %>%
+  summarise(
+    ocupacion_promedio = round(mean(OCUPACION_PORC, na.rm = TRUE), 1),
+    gasto_promedio = round(mean(GASTO_TOTAL_ESTIMADO, na.rm = TRUE), 0),
+    noches_promedio = round(mean(NOCHES, na.rm = TRUE), 1),
+    perfil_principal = ifelse(
+      length(na.omit(SEGMENTO_USUARIO)) == 0,
+      "Sin dato",
+      names(sort(table(SEGMENTO_USUARIO), decreasing = TRUE))[1]
+    ),
+    procedencia_principal = ifelse(
+      length(na.omit(PROCEDENCIA)) == 0,
+      "Sin dato",
+      names(sort(table(PROCEDENCIA), decreasing = TRUE))[1]
+    ),
+    .groups = "drop"
+  )
+
+popup_alojamientos_sf <- st_as_sf(
+  popup_alojamientos,
+  coords = c("LONGITUD", "LATITUD"),
+  crs = 4326
+)
+
+```{r preparar-popups}
+popup_alojamientos <- base_integrada %>%
+  filter(!is.na(LATITUD), !is.na(LONGITUD)) %>%
+  group_by(
+    ID_ALOJ, ESTABLECIMIENTO, LOCALIDAD, REGION_TURISTICA,
+    CATEG, UNID_HAB, PLAZAS, LATITUD, LONGITUD
+  ) %>%
+  summarise(
+    ocupacion_promedio = round(mean(OCUPACION_PORC, na.rm = TRUE), 1),
+    gasto_promedio = round(mean(GASTO_TOTAL_ESTIMADO, na.rm = TRUE), 0),
+    noches_promedio = round(mean(NOCHES, na.rm = TRUE), 1),
+    perfil_principal = ifelse(
+      length(na.omit(SEGMENTO_USUARIO)) == 0,
+      "Sin dato",
+      names(sort(table(SEGMENTO_USUARIO), decreasing = TRUE))[1]
+    ),
+    procedencia_principal = ifelse(
+      length(na.omit(PROCEDENCIA)) == 0,
+      "Sin dato",
+      names(sort(table(PROCEDENCIA), decreasing = TRUE))[1]
+    ),
+    .groups = "drop"
+  )
+
+popup_alojamientos_sf <- st_as_sf(
+  popup_alojamientos,
+  coords = c("LONGITUD", "LATITUD"),
+  crs = 4326
+)
+
+exists("popup_alojamientos_sf")
+
+
+# Mapa web integrado
+
+```{r mapa-web-integrado}
+
+# Resumen por alojamiento
+popup_alojamientos <- base_integrada %>%
+  group_by(
+    ID_ALOJ,
+    ESTABLECIMIENTO,
+    LOCALIDAD,
+    REGION_TURISTICA,
+    CLASE.y,
+    CATEG,
+    UNID_HAB,
+    PLAZAS,
+    LATITUD,
+    LONGITUD
+  ) %>%
+ summarise(
+  ocupacion_promedio = round(mean(OCUPACION_PORC, na.rm = TRUE), 1),
+  gasto_promedio = round(mean(GASTO_TOTAL_ESTIMADO, na.rm = TRUE), 0),
+  noches_promedio = round(mean(NOCHES, na.rm = TRUE), 1),
+
+  perfil_principal = ifelse(
+    length(na.omit(SEGMENTO_USUARIO)) == 0,
+    "Sin dato",
+    names(sort(table(SEGMENTO_USUARIO), decreasing = TRUE))[1]
+  ),
+
+  procedencia_principal = ifelse(
+    length(na.omit(PROCEDENCIA)) == 0,
+    "Sin dato",
+    names(sort(table(PROCEDENCIA), decreasing = TRUE))[1]
+  ),
+
+  .groups = "drop"
+)
+
+# Resumen por región
+popup_regiones <- base_integrada %>%
+  filter(!is.na(REGION_TURISTICA)) %>%
+  group_by(REGION_TURISTICA) %>%
+  summarise(
+    ocupacion_promedio = round(mean(OCUPACION_PORC, na.rm = TRUE), 1),
+    gasto_promedio = round(mean(GASTO_TOTAL_ESTIMADO, na.rm = TRUE), 0),
+    noches_promedio = round(mean(NOCHES, na.rm = TRUE), 1),
+
+    perfil_principal = ifelse(
+      length(na.omit(SEGMENTO_USUARIO)) == 0,
+      "Sin dato",
+      names(sort(table(SEGMENTO_USUARIO), decreasing = TRUE))[1]
+    ),
+
+    procedencia_principal = ifelse(
+      length(na.omit(PROCEDENCIA)) == 0,
+      "Sin dato",
+      names(sort(table(PROCEDENCIA), decreasing = TRUE))[1]
+    ),
+
+    alojamientos = n_distinct(ID_ALOJ),
+    .groups = "drop"
+  )
+
+regiones_popup <- regiones %>%
+  left_join(
+    popup_regiones,
+    by = c("region" = "REGION_TURISTICA")
+  )
+
+pal_regiones <- colorFactor(
+  palette = c(
+    "Región Alto Neuquén" = "#C78AB2",
+    "Región Confluencia" = "#F3A5A5",
+    "Región de la Comarca" = "#BDBDBD",
+    "Región de los Lagos del Sur" = "#8FB6D8",
+    "Región del Limay" = "#7FC8D6",
+    "Región del Pehuén" = "#F2E58A",
+    "Región Vaca Muerta" = "#CDB28A"
+  ),
+  domain = regiones_popup$region
+)
+
+leaflet(data = regiones_popup) %>%
+  setView(lng = -63, lat = -32, zoom = 4) %>%
+  addProviderTiles(providers$OpenStreetMap) %>%
+  addPolygons(
+    fillColor = ~pal_regiones(region),
+    fillOpacity = 0.25,
+    color = "white",
+    weight = 1,
+    popup = ~paste0(
+      "<b>", region, "</b><br>",
+      "Alojamientos: ", alojamientos, "<br>",
+      "Ocupación promedio: ", ocupacion_promedio, "%<br>",
+      "Perfil principal: ", perfil_principal, "<br>",
+      "Procedencia principal: ", procedencia_principal, "<br>",
+      "Noches promedio: ", noches_promedio, "<br>",
+      "Gasto promedio: $", gasto_promedio
+    )
+  ) %>%
+  addCircleMarkers(
+    data = popup_alojamientos_sf,
+    radius = 4,
+    stroke = FALSE,
+    fillOpacity = 0.85,
+    popup = ~paste0(
+      "<b>", ESTABLECIMIENTO, "</b><br>",
+      "Localidad: ", LOCALIDAD, "<br>",
+      "Región turística: ", REGION_TURISTICA, "<br>",
+      "Categoría: ", CATEG, "<br>",
+      "Habitaciones/unidades: ", UNID_HAB, "<br>",
+      "Plazas: ", PLAZAS, "<br>",
+      "Ocupación promedio: ", ocupacion_promedio, "%<br>",
+      "Perfil principal: ", perfil_principal, "<br>",
+      "Procedencia principal: ", procedencia_principal, "<br>",
+      "Noches promedio: ", noches_promedio, "<br>",
+      "Gasto promedio: $", gasto_promedio
+    )
+  ) %>%
+  addLegend(
+    position = "bottomright",
+    pal = pal_regiones,
+    values = regiones_popup$region,
+    title = "Regiones turísticas"
+  )
+
+
+# Operaciones geoespaciales
+
+```
+{r operaciones-geoespaciales}
+
+alojamientos_region <- st_join(
+  alojamientos_sf,
+  regiones,
+  join = st_within
+)
+
+conteo_por_region_espacial <- alojamientos_region %>%
+  st_drop_geometry() %>%
+  group_by(region) %>%
+  summarise(
+    cantidad_alojamientos = n(),
+    total_plazas = sum(PLAZAS, na.rm = TRUE),
+    total_unidades = sum(UNID_HAB, na.rm = TRUE)
+  ) %>%
+  arrange(desc(total_plazas))
+
+conteo_por_region_espacial
+
+```names(
+
+
+# Respuestas a las consignas
+
+# ¿Qué comandos de manipulación del dataframe permitirían describir distintas categorías de los datos geoespaciales o distintos grupos de fenómenos?
+
+Para describir distintas categorías de los datos geoespaciales se utilizaron funciones del paquete `dplyr`, principalmente `filter()`, `select()`, `mutate()`, `group_by()` y `summarise()`. Estas funciones permiten seleccionar variables relevantes, filtrar observaciones, generar nuevas categorías y obtener estadísticas descriptivas agrupadas.
+
+Por ejemplo, mediante `group_by(REGION_TURISTICA)` y `summarise()` fue posible calcular la cantidad de alojamientos, plazas disponibles y ocupación promedio por región turística. Asimismo, las agrupaciones por tipo de alojamiento, perfil de usuario o procedencia de la demanda permitieron caracterizar diferentes fenómenos turísticos dentro del territorio provincial.
+
+# ¿Es posible generar nuevas columnas de datos? Ejemplo: categorizar los fenómenos del dataset.
+
+Sí. A través de la función `mutate()` se generaron nuevas variables derivadas a partir de la información original. Por ejemplo, se creó la variable `TAMANIO_ALOJAMIENTO`, que clasifica a los establecimientos según su cantidad de plazas en pequeños, medianos o grandes.
+
+También se generó la variable `NIVEL_OCUPACION`, que categoriza los establecimientos según su porcentaje de ocupación en niveles bajo, medio y alto. Estas nuevas variables permiten simplificar la interpretación de los datos y facilitan posteriores análisis estadísticos y espaciales.
+
+# ¿Qué agrupaciones sería importante realizar?
+
+Las agrupaciones más relevantes para este estudio son:
+
+* Agrupación por región turística para analizar la distribución territorial de la oferta.
+* Agrupación por localidad para identificar los principales centros de concentración de alojamientos.
+* Agrupación por clase o categoría de alojamiento para caracterizar la estructura de la oferta turística.
+* Agrupación por perfil de usuario para analizar segmentos de demanda.
+* Agrupación por procedencia de los visitantes para identificar mercados emisores predominantes.
+* Agrupación temporal por mes para evaluar la evolución de la ocupación hotelera durante el año.
+
+Estas agrupaciones permiten construir indicadores territoriales y temporales que aportan información relevante para la planificación turística.
+
+# ¿Qué operaciones geoespaciales deberían realizarse en combinación con otros datasets seleccionados?
+
+La principal operación geoespacial desarrollada fue una unión espacial (`st_join`) entre los alojamientos georreferenciados y la capa de regiones turísticas del COPADE. Esta operación permitió asignar cada establecimiento a una unidad territorial y generar estadísticas espaciales agrupadas.
+
+Además, resulta especialmente relevante incorporar datasets de ocupación hotelera con dimensión temporal. La integración entre los alojamientos, las regiones turísticas y los registros mensuales de ocupación permitiría realizar análisis espacio-temporales para identificar patrones estacionales, diferencias territoriales en la utilización de la capacidad instalada y tendencias de crecimiento o retracción de la actividad turística.
+
+Asimismo, la incorporación de datasets de demanda turística posibilita relacionar la ocupación hotelera con el perfil de los visitantes, su procedencia, estadía promedio, gasto turístico y motivaciones de viaje. Esta integración permite construir indicadores de inteligencia turística orientados a la toma de decisiones y al diseño de políticas públicas.
+
+Finalmente, podrían incorporarse otras capas geográficas como departamentos, municipios, rutas provinciales, áreas naturales protegidas, centros de esquí, atractivos turísticos y corredores turísticos, permitiendo desarrollar análisis de accesibilidad, conectividad territorial, concentración espacial de la oferta y comportamiento de la demanda en diferentes escalas territoriales.
+
+
+# Conclusiones
+
+El modelo integrado permite combinar información espacial, oferta turística, ocupación hotelera y demanda. Esta estructura resulta útil para desarrollar análisis vinculados a la planificación turística, inteligencia territorial y toma de decisiones.
+
+La combinación de capas geográficas y datasets tabulares permite generar mapas interactivos, estadísticas agrupadas por región y operaciones espaciales que ayudan a comprender la distribución territorial de la actividad turística en Neuquén.
+
+popup_alojamientos_sf <- st_as_sf
+
